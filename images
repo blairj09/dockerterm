@@ -1,0 +1,25 @@
+REPOSITORY                                              TAG                 IMAGE ID            CREATED             SIZE
+blairj09/retdec                                         latest              f4ea8cc5cfdf        5 weeks ago         4.66GB
+blairj09/retdec                                         <none>              9228d969de69        5 weeks ago         4.66GB
+rocker/tidyverse                                        latest              e5125b94ed6d        7 weeks ago         1.84GB
+datascienceworkshops/data-science-at-the-command-line   latest              dfbe88c75dc8        2 months ago        2.27GB
+blairj09/retdec                                         <none>              ecac0ce54b87        2 months ago        4.35GB
+<none>                                                  <none>              b155003f1600        2 months ago        605MB
+<none>                                                  <none>              06ab8df4d481        2 months ago        605MB
+ubuntu                                                  bionic              8dcaef637b41        3 months ago        85.1MB
+rocker/tidyverse                                        <none>              98dc9a9244a4        3 months ago        1.83GB
+blacktop/retdec                                         latest              10814337433f        3 months ago        4.31GB
+trestletech/plumber                                     latest              cd07935ccefe        4 months ago        767MB
+opencpu/rstudio                                         latest              390efdf4bb29        4 months ago        1.22GB
+blairj09/get-started                                    part2               e8d04a79f139        4 months ago        148MB
+friendlyhello                                           latest              e8d04a79f139        4 months ago        148MB
+rocker/tidyverse                                        <none>              474fd5d09125        4 months ago        1.82GB
+jamesblair/h2o                                          latest              77b5170cebb0        4 months ago        2.02GB
+rocker/binder                                           latest              ea680b239974        4 months ago        1.96GB
+rocker/tidyverse                                        <none>              439c529181f6        4 months ago        1.82GB
+ubuntu                                                  16.04               20c44cd7596f        5 months ago        123MB
+python                                                  2.7-slim            b0259cf63993        5 months ago        138MB
+continuumio/anaconda                                    latest              200db45ad82a        5 months ago        3.01GB
+gopherdata/gophernotes-ds                               latest              b802a16d72e3        5 months ago        1.02GB
+rocker/rstudio                                          latest              6d91183e62c8        6 months ago        1.08GB
+rocker/tidyverse                                        <none>              a7d31a7d27b1        6 months ago        1.79GB
