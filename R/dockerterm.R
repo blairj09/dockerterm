@@ -24,39 +24,28 @@ NULL
 #' @param id character. Docker image id to use for the new container.
 #'
 #' @return The terminal id for the created terminal.
-create_docker_terminal <- function(id, image = TRUE, entrypoint = "R") {
+create_docker_terminal <- function(id, command = "R") {
   docker_term_id <- rstudioapi::terminalCreate(caption = paste0("Docker_", id), show = TRUE)
-  if (image == TRUE) {
-    rstudioapi::terminalSend(
-      docker_term_id,
-      paste0("docker run -it --rm --name ",
-             docker_term_id,
-             " ",
-             id,
-             " ",
-             entrypoint,
-             "\n")
-    )
-  } else {
-    rstudioapi::terminalSend(
-      docker_term_id,
-      paste0("docker start -i ",
-             id,
-             "\n")
-    )
-  }
+  rstudioapi::terminalSend(
+    docker_term_id,
+    paste0('docker run -it --mount type=bind,source="$(pwd)",target=/r_session -w /r_session --name ',
+           docker_term_id,
+           " ",
+           id,
+           " ",
+           command,
+           "\n")
+  )
   docker_term_id
 }
 
-#' Run dockerterm shiny gadget
+#' Create a data.frame of installed docker images
 #'
-#' \code{dockerterm} runs a shiny gadget that allows the user to specify a Docker
-#' container or image to run in the terminal window. The Docker container must
-#' have R already installed as this is the command invoked when the image is run.
-#' If the specified image is not found on the users machine, it will be downloaded
-#' from Dockerhub and run.
-dockerterm <- function() {
-  # Get docker images
+#' \code{list_docker_images} creates a data.frame of installed docker images
+#' by parsing a \code{system2} command to list all installed docker images.
+#'
+#' @return A data.frame containing details about all installed docker images.
+list_docker_images <- function() {
   docker_images <- system2(
     "docker",
     args = c("image", "ls"),
@@ -73,21 +62,19 @@ dockerterm <- function() {
     stringsAsFactors = FALSE
   )
 
-  # Get docker containers
-  docker_containers <- system2(
-    "docker",
-    args = c("container", "ls", "-a"),
-    stdout = TRUE
-  )
+  images_df
+}
 
-  containers_list <- lapply(docker_containers, strsplit, " +")[-1]
-
-  containers_df <- data.frame(
-    id = sapply(containers_list, function(x) x[[1]][[1]]),
-    image = sapply(containers_list, function(x) x[[1]][[2]]),
-    name = sapply(containers_list, function(x) x[[1]][[length(x[[1]])]]),
-    stringsAsFactors = FALSE
-  )
+#' Run dockerterm shiny gadget
+#'
+#' \code{dockerterm} runs a shiny gadget that allows the user to specify a Docker
+#' container or image to run in the terminal window. The Docker container must
+#' have R already installed as this is the command invoked when the image is run.
+#' If the specified image is not found on the users machine, it will be downloaded
+#' from Dockerhub and run.
+dockerterm <- function() {
+  # Get docker images
+  images_df <- list_docker_images()
 
   ui <- miniUI::miniPage(
     miniUI::gadgetTitleBar(
@@ -102,17 +89,16 @@ dockerterm <- function() {
             label = "Select one:",
             choices = c(
               "Existing Image",
-              "New Image",
-              "Existing Container"
+              "New Image"
             )
           ),
           shiny::textInput(
-            inputId = "docker_entrypoint",
-            label = "Docker entrypoint",
+            inputId = "docker_command",
+            label = "Docker command",
             value = "R"
           )
         ),
-        fillCol(
+        shiny::fillCol(
           miniUI::miniContentPanel(
             shiny::uiOutput("docker_select")
           )
@@ -128,15 +114,11 @@ dockerterm <- function() {
         DT::DTOutput(
           outputId = "docker_images"
         )
-      } else if (input$docker_type == "New Image") {
+      } else {
         shiny::textInput(
           inputId = "new_docker_image",
           label = "Image name",
           placeholder = "repo/image"
-        )
-      } else {
-        DT::DTOutput(
-          outputId = "docker_containers"
         )
       }
     })
@@ -151,43 +133,22 @@ dockerterm <- function() {
       )
     })
 
-    output$docker_containers <- DT::renderDT({
-      DT::datatable(
-        containers_df,
-        selection = "single",
-        options = list(
-          pageLength = 5
-        )
-      )
-    })
-
     selected_docker_id <- reactive({
       if (input$docker_type == "Existing Image") {
         selected_row <- input$docker_images_rows_selected
         images_df[selected_row, "id"]
-      } else if (input$docker_type == "New Image") {
-        input$new_docker_image
       } else {
-        selected_row <- input$docker_containers_rows_selected
-        containers_df[selected_row, "id"]
+        input$new_docker_image
       }
     })
 
     # Handle done command
     observeEvent(input$done, {
       # Create and run docker container in new terminal tab
-      if (input$docker_type != "Existing Container") {
-        terminal_id <- create_docker_terminal(
-          id = selected_docker_id(),
-          image = TRUE,
-          entrypoint = input$docker_entrypoint
-        )
-      } else {
-        terminal_id <- create_docker_terminal(
-          id = selected_docker_id(),
-          image = FALSE
-        )
-      }
+      terminal_id <- create_docker_terminal(
+        id = selected_docker_id(),
+        command = input$docker_command
+      )
       shiny::stopApp(paste0("Terminal id: ", terminal_id))
     })
   }
