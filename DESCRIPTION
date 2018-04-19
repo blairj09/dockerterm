@@ -1,8 +1,12 @@
 Package: dockerterm
-Title: What the Package Does (one line, title case)
+Title: Run Docker in RStudio Terminal
 Version: 0.0.0.9000
-Authors@R: person("First", "Last", email = "first.last@example.com", role = c("aut", "cre"))
-Description: What the package does (one paragraph).
+Authors@R: person("James", "Blair", email = "james.m.blair09@gmail.com", role = c("aut", "cre"))
+Description: dockerterm provides an RStudio Addin to run Docker containers in 
+    the RStudio terminal. The primary purpose is to run R code in a specified
+    environment although other use cases certainly exist. This package strives
+    to be lightweight and relatively dependency free. It does depend on a
+    fairly recent version of Docker in order to operate properly.
 Depends: R (>= 3.4.4)
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -11,3 +15,4 @@ Imports:
     shiny,
     miniUI,
     DT
+RoxygenNote: 6.0.1
