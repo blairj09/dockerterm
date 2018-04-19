@@ -16,6 +16,8 @@ remotes::install_github("blairj09/dockerterm")
 
 Once installed, dockerterm provides an RStudio Addin that can be run from the Addins menu. When the addin is run, a [shiny](https://shiny.rstudio.com) application will launch in the Viewer pane which allows the user to specify either an existing Docker image or a new Docker image (which will be downloaded from [Docker Hub](https://hub.docker.com) and then run). Once the image/container is selected, the user can also specify which command is run within that container, although the default command of `R` is likely the most common use case. Once all selections have been made, the user can select Run at which point the defined container is started in a new terminal. Commands from the RStudio Source Pane can be sent to the active terminal with `CTRL/CMD + ALT + ENTER`.
 
+![](https://github.com/blairj09/dockerterm/blob/master/img/gadget_demo.gif)
+
 Several Docker container pre-configured with R and various packages and utilities (including RStudio Server) can be found on [rocker's Docker Hub](https://hub.docker.com/r/rocker/). Special thanks to the rocker team and their hardwork maintaining these images.
 
 ## Limitations
