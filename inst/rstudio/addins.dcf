@@ -1,0 +1,4 @@
+Name: dockerterm
+Description: Start a Docker container in the RStudio terminal
+Binding: dockerterm
+Interactive: true
