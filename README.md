@@ -5,7 +5,7 @@ dockerterm provides an [RStudio Addin](https://rstudio.github.io/rstudio-extensi
 The container launches with the current RStudio working directory mounted to `/r_session`. Therefore, any data or other resources within the current RStudio working directory will be available within the context of the container.
 
 ## Installation
-dockerhub can currently be installed from GitHub with:
+`dockerterm` can currently be installed from GitHub with:
 
 ``` r
 # install.packages("remotes")
